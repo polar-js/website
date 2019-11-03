@@ -31,16 +31,18 @@ class Documentation {
     }
 }
 
-class Views {
+class ViewsManager {
     constructor() {
-        page('/docs/stable', this.stable);
-        page('/docs/:version', this.version);
-        page('/docs/:version/:class', this.class);
+        this.docs = new Documentation()
+
+        page('/docs/stable', () => this.stable());
+        page('/docs/:version', () => this.version());
+        page('/docs/:version/:class', d => this.class(d));
         page.start();
     }
 
     async stable() {
-        page.redirect(`/docs/${await api.getLatest()}`)
+        page.redirect(`/docs/${await this.docs.getLatest()}`)
     }
 
     async version() {
@@ -56,5 +58,4 @@ class Views {
     }
 }
 
-const views = new Views()
-const docs = new Documentation();
+const views = new ViewsManager()
