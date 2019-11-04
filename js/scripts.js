@@ -83,7 +83,7 @@ class ViewsManager {
 
     showPage(page) {
         ['home', 'docs'].forEach(p =>
-            document.getElementsByClassName(p)[0].style.display = page === p ? 'initial' : 'none'
+            document.getElementsByClassName(p)[0].style.display = page === p ? 'block' : 'none'
             )
     }
 }
