@@ -5,17 +5,13 @@
         <link rel="stylesheet" href="css/stylesheet.css">
     </head>
     <body>
-		<ul>
-            <li id="title-bar-left"><h class="title-bar-element">polar.js</h></li>
-            <li><a href="/docs/stable/" class="title-bar-element">Documentation</a></li>
-            <li><a href="https://github.com/JellyAlex/polar.js" class="title-bar-element">Github</a></li>
-            <li><a href="/" class="title-bar-element">Home</a></li>
+		<ul class="header">
+            <li id="header-title"><h class="header-element">polar.js</h></li>
+            <li><a href="/docs/stable/" class="header-element">Documentation</a></li>
+            <li><a href="https://github.com/JellyAlex/polar.js" class="header-element">Github</a></li>
+            <li><a href="/" class="header-element">Home</a></li>
 		</ul>
 		<div class="outer">
-			<div id="notification-div">
-				<span id="notification-close">&times;</span>
-				<h1 id="notification-text"></h1>
-            </div>
             <div class="view home">
                 <div align="center">
                     <img src="/static/logo.png" width="400">
@@ -56,10 +52,10 @@
             </div>
             <div class="view docs">
                 This is docs
+                <ul id="classes"></ul>
             </div>
 		</div>
     </body>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/page.js/1.11.5/page.min.js"></script>
     <script src="js/scripts.js"></script>
 </html>

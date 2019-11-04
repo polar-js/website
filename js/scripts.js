@@ -6,17 +6,24 @@ class Documentation {
     }
 
     async getVersions() {
-        //const content = await fetch(this.GITHUB_API + '/repos/JellyAlex/polar.js/contents?ref=docs');
-        //const json = await content.json();
+        /*
+        const content = await fetch(this.GITHUB_API + '/repos/JellyAlex/polar.js/contents?ref=docs');
+        const json = await content.json();
+        return json.map(file => file.name.replace('.json', ''));
+        */
         return ['1.1.1', '2.4.2', '5.3.1']
-        //return json.map(file => file.name.replace('.json', ''));
     };
     
     async getDoc(version) {
-        if (localStorage.has(version)) return localStorage.get(version);
+        const ver = JSON.parse(localStorage.getItem(version));
+        if (ver) return ver;
+        /*
         const content = await fetch(this.GITHUB_CONTENT + `/JellyAlex/polar.js/docs/${version}.json`);
         const json = await content.json();
-        localStorage.setItem(version, json);
+        */
+        const content = await fetch('/static/tempdocs.json');
+        const json = await content.json();
+        localStorage.setItem(version, JSON.stringify(json));
         return json;
     }
 
@@ -38,7 +45,7 @@ class ViewsManager {
 
         page('/', () => this.home());
         page('/docs/stable', () => this.stable());
-        page('/docs/:version', () => this.version());
+        page('/docs/:version', d => this.version(d));
         page('/docs/:version/:class', d => this.class(d));
         page.start();
     }
@@ -51,8 +58,23 @@ class ViewsManager {
         page.redirect(`/docs/${await this.docs.getLatest()}`)
     }
 
-    version() {
-        document.getElementsByClassName('home')[0].style.display = 'none';
+    async version(data) {
+        const doc = await this.docs.getDoc(data.params.version);
+
+        const ul = document.getElementById('classes');
+        while (ul.firstChild) {
+            ul.firstChild.remove();
+        }
+        
+        doc.children
+            .filter(c => c.kindString === 'Class')
+            .forEach(c => {
+                const li = document.createElement('li');
+                li.innerText = c.name;
+                ul.appendChild(li);
+            })
+
+        this.showPage('docs');
     }
 
     class(data) {
