@@ -4,6 +4,7 @@ class Documentation {
         this.GITHUB_API = 'https://api.github.com';
         this.versions = this.getVersions();
     }
+
     async getVersions() {
         //const content = await fetch(this.GITHUB_API + '/repos/JellyAlex/polar.js/contents?ref=docs');
         //const json = await content.json();
@@ -35,26 +36,33 @@ class ViewsManager {
     constructor() {
         this.docs = new Documentation()
 
+        page('/', () => this.home());
         page('/docs/stable', () => this.stable());
         page('/docs/:version', () => this.version());
         page('/docs/:version/:class', d => this.class(d));
         page.start();
     }
 
+    home() {
+        this.showPage('home');
+    }
+
     async stable() {
         page.redirect(`/docs/${await this.docs.getLatest()}`)
     }
 
-    async version() {
+    version() {
         document.getElementsByClassName('home')[0].style.display = 'none';
     }
 
-    async class(data) {
+    class(data) {
         console.log('opening doc vesion w class', data.params.version)
     }
 
-    showPage() {
-        const pages = ['home', 'docs'];
+    showPage(page) {
+        ['home', 'docs'].forEach(p =>
+            document.getElementsByClassName(p)[0].style.display = page === p ? 'initial' : 'none'
+            )
     }
 }
 
