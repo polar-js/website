@@ -42,24 +42,19 @@ class Documentation {
 class ViewsManager {
     constructor() {
         this.docs = new Documentation()
-
-        page('/', () => this.home());
-        page('/docs/stable', () => this.stable());
-        page('/docs/:version', d => this.version(d));
-        page('/docs/:version/:class', d => this.class(d));
-        page.start();
+        this.version('5.3.1');
     }
 
-    home() {
-        this.showPage('home');
+    scrollTo(view) {
+        window.scroll({
+            top: view === 'docs' ? window.innerHeight : 0,
+            left: 0,
+            behavior: 'smooth'
+          });
     }
 
-    async stable() {
-        page.redirect(`/docs/${await this.docs.getLatest()}`)
-    }
-
-    async version(data) {
-        const doc = await this.docs.getDoc(data.params.version);
+    async version(version) {
+        const doc = await this.docs.getDoc(version);
 
         const ul = document.getElementById('classes');
         while (ul.firstChild) {
@@ -73,20 +68,10 @@ class ViewsManager {
                 li.innerText = c.name;
                 ul.appendChild(li);
             })
-
-        this.showPage('docs');
     }
 
     class(data) {
         console.log('opening doc vesion w class', data.params.version)
-    }
-
-    showPage(page) {
-        ['home', 'docs'].forEach(p => {
-            for (let el of document.getElementsByClassName(p)) {
-                el.style.display = page === p ? 'block' : 'none'
-            }
-        });
     }
 }
 

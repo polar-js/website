@@ -12,8 +12,23 @@ body {
     vertical-align: baseline;
 }
 
+.home {
+    display: block;
+    width: 100%;
+    background-color: #65737e;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    list-style: none;
+    height: 101%;
+}
+
+.docs {
+    padding: 0% 0% 0% 1%;
+    margin: 1% 1%;
+}
+
 .view {
-    display: none;
     background-color: #fefefe;
 	padding: 6% 10%;
     margin: 2% 10%;
@@ -25,19 +40,19 @@ body {
 .view.bar {
     float: left;
     padding: 0% 0%;
-    margin: 1% 0%;
+    margin: 0% 0%;
+    width: 20%;
 }
 
 .view.main {
-    float: right;
-    padding: 3% 5%;
-    margin: 1% 5%;
+    width: 20%;
+    float: left;
 }
 
 .header {
     display: block;
     width: 100%;
-    background-color: #fefefe;
+    background-color: #a7adba;
     box-shadow: 3px 3px 3px grey;
     margin: 0;
     padding: 0;
@@ -53,13 +68,13 @@ body {
 
 .header li {
     padding: 10px, 5px;
-    background: #fefefe;
+    background: #a7adba;
     margin: 0;
     overflow: hidden;
 }
 
 .header li a:hover {
-    background-color: #f2f2f2;
+    background-color: #c0c5ce;
 }
 
 .header li a, .header li img {
