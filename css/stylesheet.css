@@ -36,10 +36,13 @@ body {
 
 .view {
     background-color: #fefefe;
-	padding: 6% 10%;
-    margin: 2% 10%;
+    padding: 6% 10%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 60px;
 	background-color: white;
     text-align: center;
+    max-width: 900px;
 }
 
 .light {
