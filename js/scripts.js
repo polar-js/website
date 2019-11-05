@@ -47,7 +47,7 @@ class ViewsManager {
 
     scrollTo(view) {
         window.scroll({
-            top: view === 'docs' ? window.innerHeight : 0,
+            top: view === 'docs' ? window.innerHeight * 1.01 : 0,
             left: 0,
             behavior: 'smooth'
           });
