@@ -20,7 +20,7 @@ body {
     padding: 0;
     list-style-type: none;
     list-style: none;
-    height: 101%;
+    min-height: 101%;
 }
 
 .docs {
@@ -40,6 +40,7 @@ body {
     margin-left: auto;
     margin-right: auto;
     margin-top: 60px;
+    margin-bottom: 60px;
 	background-color: white;
     text-align: center;
     max-width: 900px;
