@@ -1,5 +1,5 @@
 html * {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: 'Share Tech Mono', monospace; /* TODO: Find a better font */
 }
 
 body {
@@ -164,11 +164,31 @@ div.bar ul li:hover {
     cursor: pointer;
 }
 
+.docs input {
+    outline-width: 0;
+    border: none;
+    border-bottom: 1px solid #aaa;
+}
+
+.docs input:focus{
+    border-color: #2196f3;
+    outline: none;
+}
+
+.docs select {
+    outline-width: 0;
+    border: none;
+}
+
+.docs select:focus {
+    outline: none;
+}
+
 .arrow {
     bottom: 0;
     margin-left: auto;
     margin-right: auto;
-    margin-top: -5%;
+    margin-top: -3%; /* TODO: Positioning of this needs to be fixed */
     text-align: center;
 	-moz-animation: bounce 3s infinite;
 	-webkit-animation: bounce 3s infinite;

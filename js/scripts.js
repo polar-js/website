@@ -58,6 +58,8 @@ class ViewsManager {
         const versions = await this.docs.getVersions();
         const latest = this.docs.getLatest(versions);
 
+        document.getElementById('search').addEventListener('keyup', () => this.search());
+
         const verSelect = document.getElementById('version');
         verSelect.addEventListener('change', () => this.versionChanged(), false);
         versions.forEach(v => {
@@ -69,6 +71,22 @@ class ViewsManager {
 
         const doc = await this.docs.getDoc(latest);
         this.showDoc(doc);    
+    }
+
+    showDoc(doc) {
+        const ul = document.getElementById('classes');
+        while (ul.firstChild) {
+            ul.firstChild.remove();
+        }
+        
+        doc.children
+            .filter(c => c.kindString === 'Class')
+            .forEach(c => {
+                const li = document.createElement('li');
+                li.onclick = () => document.getElementById('doctext').innerText = JSON.stringify(c);
+                li.innerText = c.name;
+                ul.appendChild(li);
+            })
     }
 
     scrollTo(view) {
@@ -86,20 +104,8 @@ class ViewsManager {
         this.showDoc(doc);
     }
 
-    showDoc(doc) {
-        const ul = document.getElementById('classes');
-        while (ul.firstChild) {
-            ul.firstChild.remove();
-        }
-        
-        doc.children
-            .filter(c => c.kindString === 'Class')
-            .forEach(c => {
-                const li = document.createElement('li');
-                li.onclick = () => document.getElementById('doctext').innerText = JSON.stringify(c);
-                li.innerText = c.name;
-                ul.appendChild(li);
-            })
+    search(value = document.getElementById('search').value) {
+        document.getElementById('doctext').innerText = 'Searching for ' + value;
     }
 
     arrowClick() {
