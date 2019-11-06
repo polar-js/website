@@ -24,7 +24,6 @@ class Documentation {
     
     async getDoc(version) {
         const docs = JSON.parse(localStorage.getItem('docs') || '{}');
-        console.log(docs);
         if (!docs[version]) {
             /*
             const content = await fetch(this.GITHUB_CONTENT + `/JellyAlex/polar.js/docs/${version}.json`);
@@ -55,9 +54,19 @@ class ViewsManager {
         this.docs = new Documentation();
     }
 
-    async loadLatest() {
+    async init() {
         const versions = await this.docs.getVersions();
         const latest = this.docs.getLatest(versions);
+
+        const verSelect = document.getElementById('version');
+        verSelect.addEventListener('change', () => this.versionChanged(), false);
+        versions.forEach(v => {
+            const option = document.createElement('option');
+            option.innerText = v;
+            if (v === latest) option.setAttribute('selected', 'selected');
+            verSelect.appendChild(option);
+        })
+
         const doc = await this.docs.getDoc(latest);
         this.showDoc(doc);    
     }
@@ -70,6 +79,13 @@ class ViewsManager {
           });
     }
 
+    async versionChanged() {
+        const verSelect = document.getElementById('version');
+        const option = verSelect.options[verSelect.selectedIndex].value;
+        const doc = await this.docs.getDoc(option);
+        this.showDoc(doc);
+    }
+
     showDoc(doc) {
         const ul = document.getElementById('classes');
         while (ul.firstChild) {
@@ -80,12 +96,18 @@ class ViewsManager {
             .filter(c => c.kindString === 'Class')
             .forEach(c => {
                 const li = document.createElement('li');
-                li.onclick = () => console.log(c);
+                li.onclick = () => document.getElementById('doctext').innerText = JSON.stringify(c);
                 li.innerText = c.name;
                 ul.appendChild(li);
             })
     }
+
+    arrowClick() {
+        console.log('TODO')
+        console.log('If header in view, go down. If no header in view, go to docs');
+        console.log('Also should rotate to match these ^^^^');
+    }
 }
 
 const views = new ViewsManager()
-views.loadLatest();
+views.init();

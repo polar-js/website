@@ -49,17 +49,30 @@
                 </table>
             </div>
             <div class="arrow">
-                <img src="/static/arrow.svg"/>
+                <img onclick="views.arrowClick()" src="/static/arrow.svg"/>
             </div>
         </div>
         <div class="docs">
             <div class="view bar light">
-                <h1>Classes</h1>
+                <h1>Docs</h1> <!-- TODO: Docs and version select should be on the same line-->
+                <span>v<select id="version"></select></span>
+                <h2>Guides</h2>
+                <ul>
+                    <li>Filler 1</li>
+                    <li>Filler 2</li>
+                    <li>Filler 3</li>
+                </ul>
+                <h2>Examples</h2>
+                <ul>
+                    <li>Filler 1</li>
+                    <li>Filler 2</li>
+                    <li>Filler 3</li>
+                </ul>
+                <h2>Classes</h2>
                 <ul id="classes"></ul>
             </div>
             <div class="view main light">
-                RIGHT
-                More text more text more text more text More text more text more text more text More text more text more text more text More text more text more text more text More text more text more text more text 
+                <p id="doctext">Welcome!</p>
             </div>
         </div>
     </body>

@@ -148,18 +148,18 @@ td {
     text-align: left;
 }
 
-#classes {
+div.bar ul {
     list-style: none;
     padding: 5px 15px;
     text-align: left;
 }
 
-#classes li {
+div.bar ul li {
     padding-top: 4px;
     padding-bottom: 4px;
 }
 
-#classes li:hover {
+div.bar ul li:hover {
     background-color: #e6e6e6;
     cursor: pointer;
 }
