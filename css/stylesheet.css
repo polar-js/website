@@ -185,10 +185,11 @@ div.bar ul li:hover {
 }
 
 .arrow {
+    position: absolute;
     bottom: 0;
+    left: 50%;
     margin-left: auto;
     margin-right: auto;
-    margin-top: -3%; /* TODO: Positioning of this needs to be fixed */
     text-align: center;
 	-moz-animation: bounce 3s infinite;
 	-webkit-animation: bounce 3s infinite;
