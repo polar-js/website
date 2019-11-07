@@ -45,7 +45,7 @@ pre code {
     padding: 0;
     list-style-type: none;
     list-style: none;
-    min-height: 101%;
+    min-height: 100%;
 }
 
 .docs {
@@ -232,6 +232,10 @@ div.bar ul li:hover {
 	-moz-animation: bounce 3s infinite;
 	-webkit-animation: bounce 3s infinite;
 	animation: bounce 3s infinite;
+}
+
+.rotated {
+    transform: rotate(180deg);
 }
 
 @-moz-keyframes bounce {
