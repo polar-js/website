@@ -3,6 +3,8 @@
         <title>polar.js</title>
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="css/stylesheet.css">
+
+        <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     </head>
     <body>
         <div class="home">
@@ -13,40 +15,27 @@
                 <li class="header-link"><a onclick="views.scrollTo('home')">Home</a></li>
             </ul>
             <div class="view dark">
-                <p>Main page here yeah</p>
-                <table style="width:100%;">
-                    <tr>
-                        <th>About</th>
-                    </tr>
-                    <tr>
-                        <td>Polar.js is a quick, intuitive and easy 2D game engine developed in TypeScript for use on the web. It uses WebGL2 to deliver competitive performance and an entity component system to ensure scalability and ease of development.</td>
-                    </tr>
-                    <tr>
-                        <th>Features</th>
-                    </tr>
-                    <tr>
-                        <td>info on why</td>
-                    </tr>
-                    <tr>
-                        <th>Web Usage</th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <xmp><script src="unpkg.com/polar.js/umd/polar.min.js"></script></xmp>
-                            The package is hosted on npm, so can be easily accessed through the UNPKG CDN. For the latest minified version use the example above or specify a semver version (i.e. unpkg.com/polar.js@1.0.0/polar.min.js). Please refer to the UNPKG site for more details.
-                        </td>
+                <h1>About</h1>
+                <p>Polar.js is a 2D game engine developed in TypeScript for use on the web. It uses WebGL2 to deliver competitive performance and an entity component system to ensure scalability and ease of development.</p>
+                <h1>Features</h1>
+                <ul id="features">
+                    <li>2D WebGL2 renderer.</li>
+                    <li>Entity component system.</li>
+                    <li>Instanced rendering.</li>
+                    <li>Postprocessing effects.</li>
+                    <li><a href="https://schteppe.github.io/p2.js/">p2.js</a> physics.</li>
+                </ul>
+                <h1>Web Usage</h1>
+                <h2>Recommended</h2>
+                Add the following line to your HTML document:
+                <pre><code class="prettyprint">&lt;script src=&quot;unpkg.com/polar.js/umd/polar.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+                The package is hosted on npm, so can be easily accessed through the UNPKG CDN. For the latest minified version use the example above or specify a semver version:
+                <pre><i>unpkg.com/polar.js@1.0.0/polar.min.js</i></pre>
+                Please refer to the <a href="https://unpkg.com/">UNPKG site</a> for more details.
+                <h2>Alternate</h2>
+                Alternately, using the node package manager, you can bundle polar.js into your own source code.
+                <pre><code>npm install polar.js</code></pre>
                         
-                    </tr>
-                    <tr>
-                        <th>npm install</th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <pre>npm install polar.js</pre>
-                            Alternatively, you can bundle the engine with your app seperately by downloading the package with npm.
-                        </td>
-                    </tr>
-                </table>
             </div>
             <div class="arrow">
                 <img onclick="views.arrowClick()" src="/static/arrow.svg"/>

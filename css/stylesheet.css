@@ -12,6 +12,31 @@ body {
     vertical-align: baseline;
 }
 
+.home h1 {
+    display: block;
+    margin: 5 0;
+    font-size: 2em;
+    font-style: bold;
+}
+
+h2 {
+    display: block;
+    margin: 10 0;
+    padding-bottom: 0;
+    font-size: 1.4em;
+    font-style: bold;
+}
+
+pre {
+    margin: 5px 0;
+}
+
+pre code {
+    background-color: #e7e9ee;
+    padding: 4px;
+    border-radius: 4px;
+}
+
 .home {
     display: block;
     width: 100%;
@@ -36,14 +61,23 @@ body {
 
 .view {
     background-color: #fefefe;
-    padding: 6% 10%;
+    padding: 5% 10%;
     margin-left: auto;
     margin-right: auto;
     margin-top: 60px;
     margin-bottom: 60px;
 	background-color: white;
-    text-align: center;
+    text-align: left;
     max-width: 900px;
+}
+
+#features {
+    list-style-type: square;
+}
+
+#features li {
+    margin: 4px 0;
+    font-size: 1em;
 }
 
 .light {
@@ -121,7 +155,7 @@ body {
     height: 100%;
 }
 
-h1 {
+.bar h1 {
     display: block;
     font-size: 30pt;
     margin-bottom: 30px;
@@ -146,6 +180,10 @@ th {
 td {
     padding: 6px;
     text-align: left;
+}
+
+.bar {
+    text-align: center;
 }
 
 div.bar ul {
