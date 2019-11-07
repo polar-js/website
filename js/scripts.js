@@ -52,6 +52,16 @@ class Documentation {
 class ViewsManager {
     constructor() {
         this.docs = new Documentation();
+
+        this.observer = new IntersectionObserver(
+            entries => this.rotateArrow(entries[0].isIntersecting), 
+        {
+            root: null,
+            rootMargin: '150px',
+            threshold: 1.0
+        });
+
+        this.observer.observe(document.querySelector('#header-image'));
     }
 
     async init() {
@@ -91,10 +101,14 @@ class ViewsManager {
 
     scrollTo(view) {
         window.scroll({
-            top: view === 'docs' ? window.innerHeight * 1.01 : 0,
+            top: view === 'docs' ? window.innerHeight : 0,
             left: 0,
             behavior: 'smooth'
           });
+    }
+
+    search(value = document.getElementById('search').value) {
+        document.getElementById('doctext').innerText = 'Searching for ' + value;
     }
 
     async versionChanged() {
@@ -104,15 +118,16 @@ class ViewsManager {
         this.showDoc(doc);
     }
 
-    search(value = document.getElementById('search').value) {
-        document.getElementById('doctext').innerText = 'Searching for ' + value;
-    }
-
-    arrowClick() {
-        console.log('TODO')
-        console.log('If header in view, go down. If no header in view, go to docs');
-        console.log('Also should rotate to match these ^^^^');
-    }
+    rotateArrow(inView) {
+        const arrow = document.querySelector('.arrow');
+        if (inView) {
+            arrow.onclick = () => this.scrollTo('docs');
+            arrow.children[0].classList.remove('rotated')
+        } else {
+            arrow.onclick = () => this.scrollTo('home');
+            arrow.children[0].classList.add('rotated')
+        }
+    } 
 }
 
 const views = new ViewsManager()
