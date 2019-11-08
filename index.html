@@ -15,27 +15,26 @@
                 <li class="header-link"><a onclick="views.scrollTo('home')">Home</a></li>
             </ul>
             <div class="view dark">
-                <h1>About</h1>
-                <p>Polar.js is a 2D game engine developed in TypeScript for use on the web. It uses WebGL2 to deliver competitive performance and an entity component system to ensure scalability and ease of development.</p>
-                <h1>Features</h1>
-                <ul id="features">
-                    <li>2D WebGL2 renderer.</li>
-                    <li>Entity component system.</li>
-                    <li>Instanced rendering.</li>
-                    <li>Postprocessing effects.</li>
-                    <li><a href="https://schteppe.github.io/p2.js/">p2.js</a> physics.</li>
-                </ul>
-                <h1>Web Usage</h1>
-                <h2>Recommended</h2>
-                Add the following line to your HTML document:
-                <pre><code class="prettyprint">&lt;script src=&quot;unpkg.com/polar.js/umd/polar.min.js&quot;&gt;&lt;/script&gt;</code></pre>
-                The package is hosted on npm, so can be easily accessed through the UNPKG CDN. For the latest minified version use the example above or specify a semver version:
-                <pre><i>unpkg.com/polar.js@1.0.0/polar.min.js</i></pre>
-                Please refer to the <a href="https://unpkg.com/">UNPKG site</a> for more details.
-                <h2>Alternate</h2>
-                Alternately, using the node package manager, you can bundle polar.js into your own source code.
-                <pre><code>npm install polar.js</code></pre>
-                        
+                <div id="hero">
+                    <img class="left" src="https://blogs.intel.com/csr/files/2018/05/Story-6-Polar-bear-square.jpg">
+                    <div class="right">
+                        <h1>Performant Lightweight TypeScript Game Engine</h1>
+                        <button>Features</button>
+                        <button>Get Started</button>
+                    </div>
+                </div>
+                <table>
+                    <tr>
+                        <th>Quick</th>
+                        <th>Intuiative</th>
+                        <th>Easy</th>
+                    </tr>
+                    <tr>
+                        <td>Thorough GPU and CPU optimisations to ensure the optimal performance on any device.</td>
+                        <td>A smart Entity Component System ready made for easy development in complex projects.</td>
+                        <td>Already know some JavaScript? Installation is instant and setup is simple.</td>
+                    </tr>
+                </table>      
             </div>
             <div class="arrow">
                 <img src="/static/arrow.svg"/>
@@ -45,7 +44,7 @@
             <div class="view bar light">
                 <h1>Docs<select id="version"></select></h1> <!-- TODO: Docs and version select should be on the same line-->
                 <input id="search" type="search" placeholder="Search">
-                <h2>Guides</h2>
+                <h2>General</h2>
                 <ul>
                     <li>Filler 1</li>
                     <li>Filler 2</li>

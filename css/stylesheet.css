@@ -71,15 +71,6 @@ pre code {
     max-width: 900px;
 }
 
-#features {
-    list-style-type: square;
-}
-
-#features li {
-    margin: 4px 0;
-    font-size: 1em;
-}
-
 .light {
     box-shadow: 3px 3px 3px grey;
 }
@@ -97,6 +88,21 @@ pre code {
 
 .view.main {
     margin-left: 320px;
+    margin-right: auto;
+}
+
+#hero {
+    padding: 0px 10%;
+}
+
+#hero .left {
+    float: left;
+    padding: 0% 0%;
+    margin: 0% 0%;
+    width: 200px;
+}
+
+#hero .right {
     margin-right: auto;
 }
 
@@ -162,7 +168,7 @@ pre code {
 }
 
 table, th, td {
-    border: 1px solid black;
+    border: none;
     border-collapse: collapse;
 }
 
