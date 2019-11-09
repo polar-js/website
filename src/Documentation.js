@@ -26,9 +26,7 @@ class Documentation {
 
     showDoc(doc) {
         const ul = document.getElementById('classes');
-        while (ul.firstChild) {
-            ul.firstChild.remove();
-        }
+        this.removeChildren(ul);
         
         doc.children
             .filter(c => c.kindString === 'Class')
@@ -41,7 +39,18 @@ class Documentation {
     }
 
     showClass(data) {
-        const h1 = document.createElement('h1');
+        const main = document.querySelector('.main');
+        this.removeChildren(main);
+
+        const title = document.createElement('h1');
+        title.innerText = data.name;
+        main.appendChild(title);
+    }
+
+    removeChildren(element) {
+        while (element.firstChild) {
+            element.firstChild.remove();
+        }
     }
 
     search(value = document.getElementById('search').value) {
