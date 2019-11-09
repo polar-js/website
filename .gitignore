@@ -7,5 +7,5 @@ logs/
 *.log
 
 # Webpack
-src/public/bundle.js
+public/bundle.js
 dist/
