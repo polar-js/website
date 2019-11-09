@@ -14,13 +14,13 @@ const compiler = webpack({
 });
 
 function handleCompile(err, stats) {
-	if (err)
-		console.log(`Webpack error, something catastrophic happened\n${err}`);
-	else if (stats.hasErrors() || stats.hasWarnings()) {
-        console.log(`Webpack compiled with ${stats.hasErrors() ? 'some' : 'no'} errors and ${stats.hasWarnings() ? 'some' : 'no'} warnings.`);
-        console.log(stats.toString())
+    if (err)
+        console.log('\x1b[31m', `Webpack error, something catastrophic happened\n${err}`);
+    else if (stats.hasErrors() || stats.hasWarnings()) {
+        console.log('\x1b[33m', `Webpack compiled with ${stats.hasErrors() ? 'some' : 'no'} errors and ${stats.hasWarnings() ? 'some' : 'no'} warnings.`);
+        console.log('\x1b[0m', stats.toString());
     } else 
-		console.log('Webpack compiled successfully');
+        console.log('\x1b[32m', 'Webpack compiled successfully');
 }
 
 if (mode === 'watch') compiler.watch({}, handleCompile);
