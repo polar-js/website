@@ -1,0 +1,27 @@
+{
+    "name": "polar-website",
+    "version": "1.0.0",
+    "description": "Website for polar.js",
+    "main": "src/index.js",
+    "scripts": {
+        "serve": "npx serve public",
+        "build": "node build.js prod",
+        "watch": "node build.js watch"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ickerio/website.git"
+    },
+    "keywords": [
+        "polar",
+        "website"
+    ],
+    "author": "Harry Ickeringill",
+    "license": "ISC",
+    "homepage": "https://github.com/JellyAlex/polar.js",
+    "devDependencies": {
+        "eslint": "^6.6.0",
+        "serve": "^11.2.0",
+        "webpack": "^4.41.2"
+    }
+}

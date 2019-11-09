@@ -1,0 +1,11 @@
+# Packages
+node_modules/
+yarn.lock
+
+# Log files
+logs/
+*.log
+
+# Webpack
+src/public/bundle.js
+dist/

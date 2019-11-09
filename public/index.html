@@ -2,17 +2,16 @@
     <head>
         <title>polar.js</title>
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-        <link rel="stylesheet" href="css/stylesheet.css">
-
+        <link rel="stylesheet" href="stylesheet.css">
         <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     </head>
     <body>
         <div class="home">
             <ul class="header dark">
                 <li id="header-image"><img src="/static/logo-header.png" height="50px"></li>
-                <li class="header-link"><a onclick="views.scrollTo('docs')">Documentation</a></li>
+                <li class="header-link"><a onclick="Util.scrollTo('docs')">Documentation</a></li>
                 <li class="header-link"><a href="https://github.com/JellyAlex/polar.js">Github</a></li>
-                <li class="header-link"><a onclick="views.scrollTo('home')">Home</a></li>
+                <li class="header-link"><a onclick="Util.scrollTo('home')">Home</a></li>
             </ul>
             <div class="view dark">
                 <div id="hero">
@@ -42,7 +41,7 @@
         </div>
         <div class="docs">
             <div class="view bar light">
-                <h1>Docs<select id="version"></select></h1> <!-- TODO: Docs and version select should be on the same line-->
+                <h1>Docs<select id="version"></select></h1>
                 <input id="search" type="search" placeholder="Search">
                 <h2>General</h2>
                 <ul>
@@ -60,9 +59,9 @@
                 <ul id="classes"></ul>
             </div>
             <div class="view main light">
-                <p id="doctext">Welcome!</p>
+                    
             </div>
         </div>
     </body>
-    <script src="js/scripts.js"></script>
+    <script src="bundle.js"></script>
 </html>

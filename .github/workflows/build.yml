@@ -1,0 +1,29 @@
+name: Build
+on:
+  push:
+    branches:
+      - stable
+
+jobs:
+  build:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v1
+
+    - name: Use Node.js v12
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build
+      run: |
+        npm run build
+        echo polar.js.org > ./public/CNAME
+
+    - name: Deploy to gh-pages
+      run: git subtree push --prefix public origin gh-pages
