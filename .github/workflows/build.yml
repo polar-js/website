@@ -21,9 +21,13 @@ jobs:
       run: npm install
 
     - name: Build
-      run: |
-        npm run build
-        echo polar.js.org > ./public/CNAME
+      run: npm run build
 
-    - name: Deploy to gh-pages
-      run: git subtree push --prefix public origin gh-pages
+    - name: Deploy
+      uses: JamesIves/github-pages-deploy-action@releases/v2
+      env:
+        ACCESS_TOKEN: ${{ secrets.PA_TOKEN }}
+        BASE_BRANCH: stable 
+        BRANCH: gh-pages
+        FOLDER: public
+        CNAME: polar.js.org
