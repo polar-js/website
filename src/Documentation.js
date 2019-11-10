@@ -21,21 +21,14 @@ class Documentation {
         });
 
         const doc = await this.api.getDoc(latest);
-        this.showDoc(doc);    
+        this.showDoc(doc);
     }
 
     showDoc(doc) {
         const ul = document.getElementById('classes');
         this.removeChildren(ul);
         
-        doc.children
-            .filter(c => c.kindString === 'Class')
-            .forEach(c => {
-                const li = document.createElement('li');
-                li.onclick = () => this.showClass(c);
-                li.innerText = c.name;
-                ul.appendChild(li);
-            });
+        this.createList(doc.children, 'Class', c => this.showClass(c), ul);
     }
 
     showClass(data) {
@@ -45,6 +38,32 @@ class Documentation {
         const title = document.createElement('h1');
         title.innerText = data.name;
         main.appendChild(title);
+
+        const description = document.createElement('h4');
+        description.innerText = data.comment.shortText;
+        main.appendChild(description);
+
+        const methodTitle = document.createElement('b');
+        methodTitle.innerText = 'Methods';
+        const PropertyTitle = document.createElement('b');
+        PropertyTitle.innerText = 'Properties';
+        
+        main.appendChild(methodTitle);
+        main.appendChild(this.createList(data.children, 'Method', c => console.log(c)));
+        main.appendChild(PropertyTitle);
+        main.appendChild(this.createList(data.children, 'Property', c => console.log(c)));
+    }
+
+    createList(listData, type, onClick, ul = document.createElement('ul')) {
+        listData
+            .filter(c => c.kindString === type)
+            .forEach(c => {
+                const li = document.createElement('li');
+                li.onclick = () => onClick(c);
+                li.innerText = c.name;
+                ul.appendChild(li);
+            });
+        return ul;
     }
 
     removeChildren(element) {
