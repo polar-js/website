@@ -5,8 +5,8 @@
     "main": "src/index.js",
     "scripts": {
         "serve": "npx serve public",
-        "watch": "node build.js watch",
-        "build": "node build.js prod"
+        "watch": "npx webpack --env.NODE_ENV=local",
+        "build": "npx webpack -env.NODE_ENV=local --env.production"
     },
     "repository": {
         "type": "git",
@@ -22,6 +22,7 @@
     "devDependencies": {
         "eslint": "^6.6.0",
         "serve": "^11.2.0",
-        "webpack": "^4.41.2"
+        "webpack": "^4.41.2",
+        "webpack-cli": "^3.3.10"
     }
 }
