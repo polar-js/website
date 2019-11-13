@@ -28,7 +28,7 @@ class Documentation {
         const ul = document.getElementById('classes');
         this.removeChildren(ul);
         
-        this.createList(doc.children, 'Class', c => this.showClass(c), ul);
+        this.createList(doc.classes, c => this.showClass(c), ul);
     }
 
     showClass(data) {
@@ -40,7 +40,7 @@ class Documentation {
         main.appendChild(title);
 
         const description = document.createElement('h4');
-        description.innerText = data.comment.shortText;
+        description.innerText = data.description;
         main.appendChild(description);
 
         const methodTitle = document.createElement('b');
@@ -49,20 +49,18 @@ class Documentation {
         PropertyTitle.innerText = 'Properties';
         
         main.appendChild(methodTitle);
-        main.appendChild(this.createList(data.children, 'Method', c => console.log(c)));
+        main.appendChild(this.createList(data.methods, c => console.log(c)));
         main.appendChild(PropertyTitle);
-        main.appendChild(this.createList(data.children, 'Property', c => console.log(c)));
+        main.appendChild(this.createList(data.properties, c => console.log(c)));
     }
 
-    createList(listData, type, onClick, ul = document.createElement('ul')) {
-        listData
-            .filter(c => c.kindString === type)
-            .forEach(c => {
-                const li = document.createElement('li');
-                li.onclick = () => onClick(c);
-                li.innerText = c.name;
-                ul.appendChild(li);
-            });
+    createList(list, onClick, ul = document.createElement('ul')) {
+        for (const child of list){
+            const li = document.createElement('li');
+            li.onclick = () => onClick(child);
+            li.innerText = child.name;
+            ul.appendChild(li);
+        }
         return ul;
     }
 
