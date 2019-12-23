@@ -43,6 +43,10 @@ class Documentation {
         description.innerText = data.description;
         main.appendChild(description);
 
+        const constructorTitle = document.createElement('b');
+        constructorTitle.innerText = 'Constructor';
+        
+
         const methodTitle = document.createElement('b');
         methodTitle.innerText = 'Methods';
         const PropertyTitle = document.createElement('b');

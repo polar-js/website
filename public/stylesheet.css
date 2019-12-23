@@ -12,6 +12,15 @@ body {
     vertical-align: baseline;
 }
 
+a {
+    color: black;
+    text-decoration: none;
+}
+
+a:active {
+    color: black;
+}
+
 .home h1 {
     display: block;
     margin: 5 0;
@@ -53,6 +62,12 @@ pre code {
     margin: 1% 1%;
 }
 
+li a {
+    display: block;
+    width: 100%;
+    margin: auto;
+}
+
 .docs::after {
     content: "";
     display: table;
@@ -77,6 +92,10 @@ pre code {
 
 .dark {
     box-shadow: 3px 3px 3px #252525;
+}
+
+.centered {
+    text-align: center;
 }
 
 .view.bar {
@@ -153,6 +172,38 @@ pre code {
 
 #header-image img {
     padding: 5;
+}
+
+#hero img {
+    margin: 10;
+}
+
+#hero div {
+    margin-left: 210px;
+}
+
+#hero div a {
+    background: none;
+    background-color: #f0f0f0;
+    border: 1px solid #d0d0d0;
+    color: black;
+    display: inline-block;
+    padding: 10px;
+    margin: 5px;
+    text-decoration: none;
+}
+
+#hero div a:hover {
+    background-color: #e0e0e0;
+    cursor: pointer;
+}
+
+#hero div a:active {
+    color: black;
+}
+
+#hero div a:focus {
+    outline: none;
 }
 
 .header-link {
@@ -238,6 +289,27 @@ div.bar ul li:hover {
 	-moz-animation: bounce 3s infinite;
 	-webkit-animation: bounce 3s infinite;
 	animation: bounce 3s infinite;
+}
+
+#see-in-action-link {
+    color: black;
+    margin: 20 10%;
+    display: block;
+    padding: 20 20;
+    background-color: #f0f0f0;
+    text-decoration: none;
+    font-size: 20pt;
+    border: 1px solid #d0d0d0;
+}
+
+#see-in-action-link:active {
+    color: black;
+    font-style: normal;
+    text-decoration: none;
+}
+
+#see-in-action-link:hover {
+    background-color: #e0e0e0;
 }
 
 .rotated {

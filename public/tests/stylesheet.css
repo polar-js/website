@@ -1,0 +1,175 @@
+html * {
+    font-family: 'Share Tech Mono', monospace;
+}
+
+body {
+    background: #f0f0f0;
+    border: 0;
+    font-size: 100%;
+    margin: 0;
+    outline: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+
+.main {
+	padding: 6% 10%;
+    margin: auto;
+    margin-top: 100px;
+    max-width: 800px;
+	background-color: white;
+	text-align: center;
+}
+
+ul {
+    padding: 0;
+}
+
+h {
+	font-size: 30pt;
+}
+
+li {
+	list-style: none;
+	padding: 10px, 5px;
+}
+
+li a:hover, .links a:hover {
+    background-color: #f2f2f2;
+}
+
+li a {
+	color: black;
+    display: block;
+    font-size: 16pt;
+    padding: 14px 16px;
+    text-decoration: none;
+    text-align: center;
+}
+
+.links a {
+	color: black;
+    font-size: 14pt;
+    padding: 14px 16px;
+    text-decoration: none;
+	text-align: center;
+	font-style: italic;
+}
+
+.links {
+	margin-top: 50px;
+}
+
+.game-overlay {
+    position: absolute;
+    background-color: white;
+    opacity: 0.9;
+    top: 20;
+    right: 20;
+    padding: 20px 10px 20px;
+}
+
+.game-overlay button {
+    padding: 5px;
+    background-color: #f0f0f0;
+    border: 1px solid gray;
+    cursor: pointer;
+    outline: none;
+    width: 100%;
+}
+
+.game-overlay h1 {
+    font-size: 14pt;
+}
+
+.game-overlay a {
+    color: black;
+    display: block;
+    font-size: 16pt;
+    padding: 14px 16px;
+    text-decoration: none;
+    text-align: center;
+    margin: 10px 0 0 0;
+}
+
+.game-overlay a:hover {
+    background-color: #f2f2f2;
+}
+
+input[type=checkbox] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #f0f0f0;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+    background-color: #ddd;
+}
+
+.checkbox-container input:checked ~ .checkmark {
+    background-color: #333;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+  
+.checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+}
+  
+.checkbox-container .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.checkbox-container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.slider-container {
+    display: block;
+    position: relative;
+    font-size: 18px;
+    padding: 5px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.slider-container .slider {
+    display: block;
+    width: 100%;
+}
+
