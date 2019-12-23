@@ -21,11 +21,15 @@ a:active {
     color: black;
 }
 
-.home h1 {
+h1 {
     display: block;
-    margin: 5 0;
+    margin: 5 14 5 0;
     font-size: 2em;
     font-style: bold;
+}
+
+p {
+    margin: 10px 5px;
 }
 
 h2 {
@@ -36,14 +40,24 @@ h2 {
     font-style: bold;
 }
 
-pre {
-    margin: 5px 0;
+h3 {
+    display: block;
+    margin: 10 0 5 0;
+    padding-bottom: 0;
+    font-size: 1.3em;
+    font-style: bold;
 }
 
-pre code {
+pre {
+    display: block;
+    padding: 10px;
+    margin: 10px 0;
     background-color: #e7e9ee;
-    padding: 4px;
     border-radius: 4px;
+}
+
+.inline-block {
+    display: inline-block;
 }
 
 .home {
@@ -363,4 +377,34 @@ div.bar ul li:hover {
         -webkit-transform: translateY(-2px);
         transform: translateY(-2px);
     }
+}
+
+.parameter-table, .parameter-table th, .parameter-table td {
+    border: 1px solid black;
+}
+
+.parameter-table {
+    border-collapse: collapse;
+    margin: 20px, 10px;
+}
+
+.attribute {
+    display: inline-block;
+    margin-left: 8px;
+    margin-right: 8px;
+    padding: 8px;
+    border-radius: 3px;
+    font-style: italic;
+}
+
+.abstract {
+    border: 1px solid #8d9aa5;
+    background-color: #c2d3e0;
+    color: #292c30;
+}
+
+.static {
+    border: 1px solid #b3b091;
+    background-color: #e0dec2;
+    color: #292c30;
 }

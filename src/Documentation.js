@@ -35,27 +35,163 @@ class Documentation {
         const main = document.querySelector('.main');
         this.removeChildren(main);
 
+        const titleDiv = document.createElement('div');
+        main.appendChild(titleDiv);
+
         const title = document.createElement('h1');
         title.innerText = data.name;
-        main.appendChild(title);
+        title.classList.add('inline-block');
+        titleDiv.appendChild(title);
 
-        const description = document.createElement('h4');
-        description.innerText = data.description;
-        main.appendChild(description);
+        // TODO: Whether a class 'extends' another class.
+        // if (data.flags.extends) {
+        //     const extendsLabel = document.createElement('span');
+        //     extendsLabel.innerText = `extends ${data.flags.extends}`;
+        //     titleDiv.appendChild(extendsLabel);
+        // }
 
-        const constructorTitle = document.createElement('b');
-        constructorTitle.innerText = 'Constructor';
+        if (data.flags.abstract) {
+            const abstractLabel = document.createElement('span');
+            abstractLabel.innerText = 'abstract';
+            abstractLabel.classList.add('attribute');
+            abstractLabel.classList.add('abstract');
+            titleDiv.appendChild(abstractLabel);
+        }
+
+        const classDescription = document.createElement('p');
+        classDescription.innerText = data.description;
+        main.appendChild(classDescription);
+
+        if (data.parameters != null) {
+            const constructorTitle = document.createElement('h2');
+            constructorTitle.innerText = 'Constructor';
+            main.appendChild(constructorTitle);
+
+            const examplePre = document.createElement('pre');
+            const exampleCode = document.createElement('code');
+            exampleCode.classList.add('prettyprint');
+            exampleCode.classList.add('lang-js');
+            if (data.parameters.length > 2)
+                exampleCode.innerHTML = `new Polar.${data.name}(${data.parameters.map(p => p.name).join(',\n    ')}\n);`;
+            else 
+                exampleCode.innerHTML = `new Polar.${data.name}(${data.parameters.map(p => p.name).join(', ')});`;
+            examplePre.appendChild(exampleCode);
+            main.appendChild(examplePre);
+            
+            if (data.parameters.length > 0) {
+                const table = document.createElement('table');
+                table.classList.add('parameter-table');
+                const headerRow = document.createElement('tr');
+                const headings = ['Parameter', 'Type', 'Optional', 'Default', 'Description'];
+                for (let heading of headings) {
+                    const th = document.createElement('th');
+                    th.innerText = heading;
+                    headerRow.appendChild(th);
+                }
+                table.appendChild(headerRow);
+                
+                for (let parameter of data.parameters) {
+                    const row = document.createElement('tr');
+                    for (let heading of headings) {
+                        const td = document.createElement('td');
+                        switch (heading) {
+                        case 'Parameter': td.innerText = parameter.name || ''; break;
+                        case 'Type': td.innerText = parameter.type || ''; break;
+                        case 'Optional': td.innerText = 'TODO'; break;
+                        case 'Default': td.innerText = 'TODO'; break;
+                        case 'Description': td.innerText = parameter.description || ''; break;
+                        }
+                        row.appendChild(td);
+                    }
+                    table.appendChild(row);
+                }
+                main.appendChild(table);
+            }
+        }
         
+        if (data.methods) {
+            const methods = data.methods.filter(m => {
+                return !m.flags.private;
+            });
 
-        const methodTitle = document.createElement('b');
-        methodTitle.innerText = 'Methods';
-        const PropertyTitle = document.createElement('b');
-        PropertyTitle.innerText = 'Properties';
-        
-        main.appendChild(methodTitle);
-        main.appendChild(this.createList(data.methods, c => console.log(c)));
-        main.appendChild(PropertyTitle);
-        main.appendChild(this.createList(data.properties, c => console.log(c)));
+            if (methods.length > 0) {
+                const methodTitle = document.createElement('h2');
+                methodTitle.innerText = 'Methods';
+                main.appendChild(methodTitle);
+
+                for (let method of methods) {
+                    const methodDiv = document.createElement('div');
+
+                    if (method.flags.static) {
+                        const staticLabel = document.createElement('span');
+                        staticLabel.innerText = 'static';
+                        staticLabel.classList.add('attribute');
+                        staticLabel.classList.add('static');
+                        methodDiv.appendChild(staticLabel);
+                    }
+
+                    if (method.flags.abstract) {
+                        const staticLabel = document.createElement('span');
+                        staticLabel.innerText = 'abstract';
+                        staticLabel.classList.add('attribute');
+                        staticLabel.classList.add('abstract');
+                        methodDiv.appendChild(staticLabel);
+                    }
+
+                    const methodText = document.createElement('h3');
+                    methodText.innerText = `.${method.name}(<TODO: PARAMETERS>): ${method.returns.name}`;
+                    methodText.classList.add('inline-block');
+                    methodDiv.appendChild(methodText);
+
+                    const methodDesc = document.createElement('p');
+                    methodDesc.innerText = method.description;
+                    methodDiv.appendChild(methodDesc);
+
+                    main.appendChild(methodDiv);
+                }
+            }
+        }
+
+        if (data.properties) {
+            const properties = data.properties.filter(p => {
+                return !p.flags.private;
+            });
+
+            if (properties.length > 0) {
+                const PropertyTitle = document.createElement('h2');
+                PropertyTitle.innerText = 'Properties';
+                main.appendChild(PropertyTitle);
+                
+                for (let property of properties) {
+                    
+                    const propertyDiv = document.createElement('div');
+                    
+                    const propertyName = document.createElement('h3');
+                    propertyName.innerText = '.' + property.name;
+                    propertyDiv.appendChild(propertyName);
+    
+                    if (property.flags.static) {
+                        const staticLabel = document.createElement('span');
+                        staticLabel.innerText = 'static';
+                        propertyDiv.appendChild(staticLabel);
+                    }
+                    
+                    const typeTitle = document.createElement('b');
+                    typeTitle.innerText = 'Type: ';
+                    propertyDiv.appendChild(typeTitle);
+                    
+                    const type = document.createElement('i');
+                    type.innerText = property.type;
+                    propertyDiv.appendChild(type);
+                    
+                    const propertyDesc = document.createElement('p');
+                    propertyDesc.innerText = property.description;
+                    propertyDiv.appendChild(propertyDesc);
+    
+                    main.appendChild(propertyDiv);
+                }
+            }
+        }
     }
 
     createList(list, onClick, ul = document.createElement('ul')) {
