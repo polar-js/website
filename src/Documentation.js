@@ -1,37 +1,68 @@
 const API = require('./API.js');
+const Location = require('./Location.js');
 
 class Documentation {
     constructor() {
         this.api = new API();
+        window.onhashchange = () => this.init();
     }
 
     async init() {
+
+        Location.init();
+        Location.setPage('docs');
+
         const versions = await this.api.getVersions();
-        const latest = this.api.getLatest(versions);
+
+        let selected = Location.getVersion();
+        if (!selected) {
+            selected = this.api.getLatest(versions);
+            Location.setVersion(selected);
+        }
 
         document.getElementById('search').addEventListener('keyup', () => this.search());
 
         const verSelect = document.getElementById('version');
+        verSelect.innerHTML = '';
         verSelect.addEventListener('change', () => this.versionChanged(), false);
-        versions.forEach(v => {
+        versions.forEach(version => {
             const option = document.createElement('option');
-            option.innerText = v;
-            if (v === latest) option.setAttribute('selected', 'selected');
+            option.innerText = version;
+            if (version === selected) option.setAttribute('selected', 'selected');
             verSelect.appendChild(option);
         });
 
-        const doc = await this.api.getDoc(latest);
+        const doc = await this.api.getDoc(selected);
         this.showDoc(doc);
+
+        if (Location.getHeading() == 'class') {
+            const selected = Location.getSelected();
+            if (selected) {
+                const names = doc.classes.map(c => c.name);
+                if (names.includes(selected)) {
+                    this.showClass(doc.classes[names.indexOf(selected)]);
+                }
+                else {
+                    Location.truncateItems(2);
+                }
+            }
+        }
     }
 
     showDoc(doc) {
         const ul = document.getElementById('classes');
         this.removeChildren(ul);
         
-        this.createList(doc.classes, c => this.showClass(c), ul);
+        this.createList(doc.classes, c => {
+            Location.setHeading('class');
+            Location.setSelected(c.name);
+        }, ul);
     }
 
     showClass(data) {
+        Location.setHeading('class');
+        Location.setSelected(data.name);
+
         const main = document.querySelector('.main');
         this.removeChildren(main);
 
@@ -217,6 +248,7 @@ class Documentation {
     async versionChanged() {
         const verSelect = document.getElementById('version');
         const option = verSelect.options[verSelect.selectedIndex].value;
+        Location.setVersion(option);
         const doc = await this.api.getDoc(option);
         this.showDoc(doc);
     }
