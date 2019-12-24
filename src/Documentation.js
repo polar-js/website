@@ -10,7 +10,10 @@ class Documentation {
     async init() {
 
         Location.init();
-        Location.setPage('docs');
+        if (Location.getPage() !== 'docs') {
+            Location.setPage('docs');
+            this.showHome();
+        }
 
         const versions = await this.api.getVersions();
 
@@ -41,12 +44,14 @@ class Documentation {
                 const names = doc.classes.map(c => c.name);
                 if (names.includes(selected)) {
                     this.showClass(doc.classes[names.indexOf(selected)]);
+                    return;
                 }
                 else {
                     Location.truncateItems(2);
                 }
             }
         }
+        this.showHome();
     }
 
     showDoc(doc) {
@@ -223,6 +228,66 @@ class Documentation {
                 }
             }
         }
+    }
+
+    showHome() {
+        const main = document.querySelector('.main');
+        main.innerHTML = 
+`<h1>Polar Documentation</h1>
+<h2>Prerequisites</h2>
+<p>To develop with Polar, we recommended that you have:</p>
+<ul>
+    <li>experience with Javascript or TypeScript</li>
+    <li>knowledge of object oriented programming techniques such inheritance and polymorphism.</li>
+</ul>
+<p>Thats it! Polar is designed to be easy to pick up, including plenty of technical features for the more enthusiastic users.</p>
+<h2>Project Setup</h2>
+<p>This section will discuss how to setup and use Polar with Javascript.</p>
+<ol>
+<li>Visit the <a href='https://github.com/polar-js/polar.js'>github repository</a> and download the latest release of polar.js.</li>
+<li>Place the polar.X.X.X.js file in your project directory.</li>
+<li>Include the script at the end of the body of your HTML file.</li>
+<pre><code class="prettyprint"
+>&lt;html&gt;
+    ...
+    &lt;body&gt;
+        ...
+        &lt;script src=&quot;/polar.1.0.0.js&quot;&gt;&lt;/script&gt;
+        &lt;script src=&quot;/my-game.js&quot;&gt;&lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<li>Add a canvas above the script with a specific ID.</li>
+<pre><code class="prettyprint"
+>&lt;html&gt;
+    ...
+    &lt;body&gt;
+        ...
+        &lt;canvas id=&quot;game-canvas&quot;&gt;&lt;/canvas&gt;
+        ...
+        &lt;script src=&quot;/polar.1.0.0.js&quot;&gt;&lt;/script&gt;
+        &lt;script src=&quot;/my-game.js&quot;&gt;&lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</ol>
+<h2>JavaScript Programming Guide</h2>
+<p>To start the engine, call <code class="prettyprint">Polar.begin(...)</code>. This function inputs an instance of a subclass of <code class="prettyprint">Polar.Application</code>.
+The application inputs a <code class="prettyprint">Polar.ApplicationSettings</code> instance where values such as <i>canvasID</i> and <i>displayMode</i> are specified.
+</p>
+<pre><code class="prettyprint"
+>// my-game.js
+class Sandbox extends Polar.Application {
+	constructor(settings) {
+		super(settings);
+                console.log(&apos;Created application!&apos;);
+	}
+}
+
+Polar.begin(new Sandbox({ canvasID: &apos;game-canvas&apos;, displayMode: &apos;fill&apos; }));
+</pre></code>
+`;
+
     }
 
     createList(list, onClick, ul = document.createElement('ul')) {
