@@ -13,12 +13,17 @@ body {
 }
 
 a {
-    color: black;
+    color: rgb(0, 0, 200);
     text-decoration: none;
+    border-bottom: 1px dashed rgb(0, 0, 200);
 }
 
 a:active {
-    color: black;
+    color: rgb(0, 0, 200);
+}
+
+a:hover {
+    background-color: #efefef;
 }
 
 h1 {
@@ -54,6 +59,11 @@ pre {
     margin: 10px 0;
     background-color: #e7e9ee;
     border-radius: 4px;
+    white-space: pre-wrap;
+}
+
+code {
+    word-wrap: break-word;
 }
 
 .inline-block {
@@ -76,7 +86,7 @@ pre {
     margin: 1% 1%;
 }
 
-li a {
+.header-link a {
     display: block;
     width: 100%;
     margin: auto;
