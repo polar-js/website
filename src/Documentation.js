@@ -1,5 +1,6 @@
 const API = require('./API.js');
 const Location = require('./Location.js');
+const Util = require('./Util.js');
 
 class Documentation {
     constructor() {
@@ -43,7 +44,9 @@ class Documentation {
             if (selected) {
                 const names = doc.classes.map(c => c.name);
                 if (names.includes(selected)) {
-                    this.showClass(doc.classes[names.indexOf(selected)]);
+                    this.showClass(doc.classes[names.indexOf(selected)], doc);
+                    Util.scrollTo('docs');
+                    PR.prettyPrint();
                     return;
                 }
                 else {
@@ -52,40 +55,63 @@ class Documentation {
             }
         }
         this.showHome();
+        PR.prettyPrint();
     }
 
     showDoc(doc) {
         const ul = document.getElementById('classes');
         this.removeChildren(ul);
         
-        this.createList(doc.classes, c => {
-            Location.setHeading('class');
-            Location.setSelected(c.name);
-        }, ul);
+        for (let $class of doc.classes) {
+            const li = document.createElement('li');
+            li.style.height = '1.5em';
+            li.style.padding = '0';
+            li.style.margin = '0 2px';
+            const anchor = document.createElement('a');
+            if ($class.name === Location.getSelected()) {
+                anchor.style.fontWeight = 'bolder';
+                anchor.innerText = `> ${$class.name}`;
+            }
+            else {
+                anchor.innerText = $class.name;
+            }
+            anchor.style.margin = '8px 0 0 0';
+            anchor.href = `#/docs/${Location.getVersion()}/class/${$class.name}`;
+            anchor.classList.add('doc-item');
+            anchor.classList.add('fill');
+            li.appendChild(anchor);
+            ul.appendChild(li);
+        }
     }
 
-    showClass(data) {
+    showClass(data, doc) {
         Location.setHeading('class');
         Location.setSelected(data.name);
 
         const main = document.querySelector('.main');
-        this.removeChildren(main);
+        main.innerHTML = '';
 
+        // CLASS TITLE
         const titleDiv = document.createElement('div');
         main.appendChild(titleDiv);
 
         const title = document.createElement('h1');
-        title.innerText = data.name;
+        const classLink = document.createElement('a');
+        classLink.classList.add('doc-item');
+        classLink.href = `#/docs/${Location.getVersion()}/class/${data.name}`;
+        classLink.innerText = data.name;
+        title.appendChild(classLink);
         title.classList.add('inline-block');
         titleDiv.appendChild(title);
 
-        // TODO: Whether a class 'extends' another class.
-        // if (data.flags.extends) {
-        //     const extendsLabel = document.createElement('span');
-        //     extendsLabel.innerText = `extends ${data.flags.extends}`;
-        //     titleDiv.appendChild(extendsLabel);
-        // }
+        // CLASS EXTENDS
+        if (data.extends) {
+            const extendsLabel = document.createElement('span');
+            extendsLabel.innerHTML = `<i>extends</i> <span class="typ">${Util.escapeHtml(data.extends)}</span>`;
+            titleDiv.appendChild(extendsLabel);
+        }
 
+        // CLASS ABSTRACT LABEL
         if (data.flags.abstract) {
             const abstractLabel = document.createElement('span');
             abstractLabel.innerText = 'abstract';
@@ -94,57 +120,38 @@ class Documentation {
             titleDiv.appendChild(abstractLabel);
         }
 
+        // CLASS DESCRIPTION
         const classDescription = document.createElement('p');
         classDescription.innerText = data.description;
         main.appendChild(classDescription);
 
         if (data.parameters != null) {
+            // CONSTRUCTOR TITLE
             const constructorTitle = document.createElement('h2');
             constructorTitle.innerText = 'Constructor';
             main.appendChild(constructorTitle);
 
+            // CONSTRUCTOR EXAMPLE
             const examplePre = document.createElement('pre');
             const exampleCode = document.createElement('code');
             exampleCode.classList.add('prettyprint');
             exampleCode.classList.add('lang-js');
             if (data.parameters.length > 2)
-                exampleCode.innerHTML = `new Polar.${data.name}(${data.parameters.map(p => p.name).join(',\n    ')}\n);`;
-            else 
-                exampleCode.innerHTML = `new Polar.${data.name}(${data.parameters.map(p => p.name).join(', ')});`;
+                exampleCode.innerHTML = `new Polar.<a href="#/docs/${Location.getVersion()}/class/${data.name}">${data.name}</a>(\n    ${Util.escapeHtml(
+                    data.parameters.map(p => p.name).join(',\n    ')
+                )}\n);`;
+            else
+                exampleCode.innerText = `new Polar.${data.name}(${data.parameters.map(p => p.name).join(', ')});`;
             examplePre.appendChild(exampleCode);
             main.appendChild(examplePre);
             
-            if (data.parameters.length > 0) {
-                const table = document.createElement('table');
-                table.classList.add('parameter-table');
-                const headerRow = document.createElement('tr');
-                const headings = ['Parameter', 'Type', 'Optional', 'Default', 'Description'];
-                for (let heading of headings) {
-                    const th = document.createElement('th');
-                    th.innerText = heading;
-                    headerRow.appendChild(th);
-                }
-                table.appendChild(headerRow);
-                
-                for (let parameter of data.parameters) {
-                    const row = document.createElement('tr');
-                    for (let heading of headings) {
-                        const td = document.createElement('td');
-                        switch (heading) {
-                        case 'Parameter': td.innerText = parameter.name || ''; break;
-                        case 'Type': td.innerText = parameter.type || ''; break;
-                        case 'Optional': td.innerText = 'TODO'; break;
-                        case 'Default': td.innerText = 'TODO'; break;
-                        case 'Description': td.innerText = parameter.description || ''; break;
-                        }
-                        row.appendChild(td);
-                    }
-                    table.appendChild(row);
-                }
-                main.appendChild(table);
-            }
+            // CONSTRUCTOR PARAMETER TABLE
+            const paramTable = this.createParamTable(data.parameters, doc);
+            if (paramTable)
+                main.appendChild(paramTable);
         }
         
+        // CLASS METHODS
         if (data.methods) {
             const methods = data.methods.filter(m => {
                 return !m.flags.private;
@@ -174,14 +181,39 @@ class Documentation {
                         methodDiv.appendChild(staticLabel);
                     }
 
+                    // METHOD TITLE
                     const methodText = document.createElement('h3');
-                    methodText.innerText = `.${method.name}(<TODO: PARAMETERS>): ${method.returns.name}`;
+                    methodText.innerText = `.${method.name}(${method.parameters ? method.parameters.map(p => p.name).join(', ') : ''}): ${method.returns.name}`;
                     methodText.classList.add('inline-block');
                     methodDiv.appendChild(methodText);
 
+                    // METHOD DESCRIPTION
                     const methodDesc = document.createElement('p');
                     methodDesc.innerText = method.description;
                     methodDiv.appendChild(methodDesc);
+
+                    // METHOD RETURN
+                    if (method.returns && method.returns.name != 'void') {
+                        const methodReturn = document.createElement('p');
+                        if (doc.classes.map(c => c.name).includes(method.returns.name)) {
+                            methodReturn.innerHTML = `returns <a class="doc-item" href="#/docs/${
+                                Location.getVersion()}/class/${method.returns.name}">${
+                                Util.escapeHtml(method.returns.name)}</span>`; 
+                        }
+                        else {
+                            methodDesc.innerHTML = `returns <span class="typ">${Util.escapeHtml(method.returns.name)}</span>`;
+
+
+                        }
+                        methodDiv.appendChild(methodReturn);
+                    }
+
+                    // METHOD PARAMETER TABLE
+                    if (method.parameters) {
+                        const paramTable = this.createParamTable(method.parameters, doc);
+                        if (paramTable)
+                            methodDiv.appendChild(paramTable);
+                    }
 
                     main.appendChild(methodDiv);
                 }
@@ -290,14 +322,48 @@ Polar.begin(new Sandbox({ canvasID: &apos;game-canvas&apos;, displayMode: &apos;
 
     }
 
-    createList(list, onClick, ul = document.createElement('ul')) {
-        for (const child of list){
-            const li = document.createElement('li');
-            li.onclick = () => onClick(child);
-            li.innerText = child.name;
-            ul.appendChild(li);
+    createParamTable(parameters, doc) {
+        if (parameters.length > 0) {
+            const table = document.createElement('table');
+            table.classList.add('parameter-table');
+            const headerRow = document.createElement('tr');
+            const headings = ['Parameter', 'Type', 'Optional', 'Default', 'Description'];
+            for (let heading of headings) {
+                const th = document.createElement('th');
+                th.innerText = heading;
+                headerRow.appendChild(th);
+            }
+            table.appendChild(headerRow);
+            
+            for (let parameter of parameters) {
+                const row = document.createElement('tr');
+                for (let heading of headings) {
+                    const td = document.createElement('td');
+                    switch (heading) {
+                    case 'Parameter': td.innerText = parameter.name || ''; break;
+                    case 'Type': 
+                        if (parameter.type) {
+                            console.log(doc.classes.map(c => c.name));
+                            if (doc.classes.map(c => c.name).includes(parameter.type)) {
+                                td.innerHTML = `<a class="doc-item" href="#/docs/${
+                                    Location.getVersion()}/class/${parameter.type}">${Util.escapeHtml(parameter.type)}</a>`; 
+                            }
+                            else td.innerText = parameter.type;
+                        }
+                        else td.innerText = '';
+                                
+                        break;
+                    case 'Optional': td.innerText = parameter.flags.optional ? 'Optional' : 'Required'; break;
+                    case 'Default': td.innerText = 'TODO'; break;
+                    case 'Description': td.innerText = parameter.description || ''; break;
+                    }
+                    row.appendChild(td);
+                }
+                table.appendChild(row);
+            }
+
+            return table;
         }
-        return ul;
     }
 
     removeChildren(element) {
