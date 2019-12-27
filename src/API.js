@@ -9,7 +9,7 @@ class API {
         const lastRefresh = parseInt(localStorage.getItem('last_refresh') || 0);
         if (lastRefresh + 3.6e+6 < now) {
             /*
-            const content = await fetch(this.GITHUB_API + '/repos/JellyAlex/polar.js/contents?ref=docs');
+            const content = await fetch(this.GITHUB_API + '/repos/polar-js/polar.js/contents?ref=docs');
             const json = await content.json();
             const versions = json.map(file => file.name.replace('.json', ''));
             */
@@ -26,7 +26,7 @@ class API {
         const docs = JSON.parse(localStorage.getItem('docs') || '{}');
         if (!docs[version]) {
             /*
-            const content = await fetch(this.GITHUB_CONTENT + `/JellyAlex/polar.js/docs/${version}.json`);
+            const content = await fetch(this.GITHUB_CONTENT + `/polar-js/polar.js/docs/${version}.json`);
             docs[version] = await content.json();
             */
             const content = await fetch('/static/tempdocs.json');
