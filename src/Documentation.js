@@ -11,17 +11,17 @@ class Documentation {
     async init() {
 
         Location.init();
+        // TODO: Multiple pages eg. home, docs
         if (Location.getPage() !== 'docs') {
             Location.setPage('docs');
-            this.showHome();
         }
 
         const versions = await this.api.getVersions();
 
         let selected = Location.getVersion();
-        if (!selected) {
+        if (!selected || selected === 'latest') {
             selected = this.api.getLatest(versions);
-            Location.setVersion(selected);
+            Location.setVersion('latest');
         }
 
         document.getElementById('search').addEventListener('keyup', () => this.search());
@@ -96,18 +96,14 @@ class Documentation {
         main.appendChild(titleDiv);
 
         const title = document.createElement('h1');
-        const classLink = document.createElement('a');
-        classLink.classList.add('doc-item');
-        classLink.href = `#/docs/${Location.getVersion()}/class/${data.name}`;
-        classLink.innerText = data.name;
-        title.appendChild(classLink);
+        title.innerHTML = this.createClassLink(Location.getVersion(), data.name);
         title.classList.add('inline-block');
         titleDiv.appendChild(title);
 
         // CLASS EXTENDS
         if (data.extends) {
             const extendsLabel = document.createElement('span');
-            extendsLabel.innerHTML = `<i>extends</i> <span class="typ">${Util.escapeHtml(data.extends)}</span>`;
+            extendsLabel.innerHTML = `<i>extends</i> ${Util.escapeHtml(data.extends)}`;
             titleDiv.appendChild(extendsLabel);
         }
 
@@ -137,11 +133,11 @@ class Documentation {
             exampleCode.classList.add('prettyprint');
             exampleCode.classList.add('lang-js');
             if (data.parameters.length > 2)
-                exampleCode.innerHTML = `new Polar.<a href="#/docs/${Location.getVersion()}/class/${data.name}">${data.name}</a>(\n    ${Util.escapeHtml(
-                    data.parameters.map(p => p.name).join(',\n    ')
+                exampleCode.innerHTML = `new Polar.${this.createClassLink(Location.getVersion(), data.name)}(\n    ${Util.escapeHtml(data.parameters.map(p => p.name).join(',\n    ')
                 )}\n);`;
             else
-                exampleCode.innerText = `new Polar.${data.name}(${data.parameters.map(p => p.name).join(', ')});`;
+                exampleCode.innerHTML = `new Polar.${this.createClassLink(Location.getVersion(), data.name)}(${
+                    Util.escapeHtml(data.parameters.map(p => p.name).join(', '))});`;
             examplePre.appendChild(exampleCode);
             main.appendChild(examplePre);
             
@@ -164,7 +160,7 @@ class Documentation {
 
                 for (let method of methods) {
                     const methodDiv = document.createElement('div');
-
+                    // STATIC LABEL
                     if (method.flags.static) {
                         const staticLabel = document.createElement('span');
                         staticLabel.innerText = 'static';
@@ -172,7 +168,7 @@ class Documentation {
                         staticLabel.classList.add('static');
                         methodDiv.appendChild(staticLabel);
                     }
-
+                    // ABSTRACT LABEL
                     if (method.flags.abstract) {
                         const staticLabel = document.createElement('span');
                         staticLabel.innerText = 'abstract';
@@ -183,7 +179,7 @@ class Documentation {
 
                     // METHOD TITLE
                     const methodText = document.createElement('h3');
-                    methodText.innerText = `.${method.name}(${method.parameters ? method.parameters.map(p => p.name).join(', ') : ''}): ${method.returns.name}`;
+                    methodText.innerText = `.${method.name}(${method.parameters ? method.parameters.map(p => p.name).join(', ') : ''})`;
                     methodText.classList.add('inline-block');
                     methodDiv.appendChild(methodText);
 
@@ -193,17 +189,13 @@ class Documentation {
                     methodDiv.appendChild(methodDesc);
 
                     // METHOD RETURN
-                    if (method.returns && method.returns.name != 'void') {
+                    if (method.returns.name && method.returns.name != 'void') {
                         const methodReturn = document.createElement('p');
-                        if (doc.classes.map(c => c.name).includes(method.returns.name)) {
-                            methodReturn.innerHTML = `returns <a class="doc-item" href="#/docs/${
-                                Location.getVersion()}/class/${method.returns.name}">${
-                                Util.escapeHtml(method.returns.name)}</span>`; 
+                        if (this.classExists(doc, method.returns.name)) {
+                            methodReturn.innerHTML = `<b>returns: </b>${this.createClassLink(Location.getVersion(), method.returns.name)}`;
                         }
                         else {
-                            methodDesc.innerHTML = `returns <span class="typ">${Util.escapeHtml(method.returns.name)}</span>`;
-
-
+                            methodDesc.innerHTML = `<b>returns: </b><i><span class="typ">${Util.escapeHtml(method.returns.name)}</span></i>`;
                         }
                         methodDiv.appendChild(methodReturn);
                     }
@@ -244,13 +236,12 @@ class Documentation {
                         propertyDiv.appendChild(staticLabel);
                     }
                     
-                    const typeTitle = document.createElement('b');
-                    typeTitle.innerText = 'Type: ';
+                    const typeTitle = document.createElement('p');
+                    if (this.classExists(doc, property.type))
+                        typeTitle.innerHTML = `<b>type: </b>${this.createClassLink(Location.getVersion(), property.type)}`;
+                    else
+                        typeTitle.innerHTML = `<b>type: </b><i><span class="typ">${Util.escapeHtml(property.type)}</span></i>`;
                     propertyDiv.appendChild(typeTitle);
-                    
-                    const type = document.createElement('i');
-                    type.innerText = property.type;
-                    propertyDiv.appendChild(type);
                     
                     const propertyDesc = document.createElement('p');
                     propertyDesc.innerText = property.description;
@@ -344,9 +335,8 @@ Polar.begin(new Sandbox({ canvasID: &apos;game-canvas&apos;, displayMode: &apos;
                     case 'Type': 
                         if (parameter.type) {
                             console.log(doc.classes.map(c => c.name));
-                            if (doc.classes.map(c => c.name).includes(parameter.type)) {
-                                td.innerHTML = `<a class="doc-item" href="#/docs/${
-                                    Location.getVersion()}/class/${parameter.type}">${Util.escapeHtml(parameter.type)}</a>`; 
+                            if (this.classExists(doc, parameter.type)) {
+                                td.innerHTML = this.createClassLink(Location.getVersion(), parameter.type); 
                             }
                             else td.innerText = parameter.type;
                         }
@@ -354,7 +344,7 @@ Polar.begin(new Sandbox({ canvasID: &apos;game-canvas&apos;, displayMode: &apos;
                                 
                         break;
                     case 'Optional': td.innerText = parameter.flags.optional ? 'Optional' : 'Required'; break;
-                    case 'Default': td.innerText = 'TODO'; break;
+                    case 'Default': td.innerText = 'TODO'; break; // TODO: Default values.
                     case 'Description': td.innerText = parameter.description || ''; break;
                     }
                     row.appendChild(td);
@@ -377,11 +367,30 @@ Polar.begin(new Sandbox({ canvasID: &apos;game-canvas&apos;, displayMode: &apos;
     }
 
     async versionChanged() {
-        const verSelect = document.getElementById('version');
-        const option = verSelect.options[verSelect.selectedIndex].value;
-        Location.setVersion(option);
+        const versions = await this.api.getVersions();
+
+        const selected = document.getElementById('version');
+        const option = selected.options[selected.selectedIndex].value;
+
+        if (versions.length > 0) {
+            if (versions[versions.length - 1] === option)
+                Location.setVersion('latest');
+            else 
+                Location.setVersion(option);
+        }
+        else Location.setVersion(option);
+        
         const doc = await this.api.getDoc(option);
         this.showDoc(doc);
+    }
+
+    createClassLink(version, name) {
+        return `<a class="doc-item" href="#/docs/${version}/class/${name}">${
+            Util.escapeHtml(name)}</a>`;
+    }
+
+    classExists(doc, name) {
+        return doc.classes.map(c => c.name).includes(name);
     }
 }
 
